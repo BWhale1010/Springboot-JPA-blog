@@ -4,16 +4,17 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bw.blog.model.RoleType;
@@ -28,6 +29,19 @@ public class DummyControllerTest {
 
 	@Autowired // 의존성 주입 (DI)
 	private UserRepository userRepository;
+	
+	@DeleteMapping("/dummy/user/{id}")
+	public String deleteUser(@PathVariable int id) throws Exception {
+		
+		if(userRepository.existsById(id)) {
+			userRepository.deleteById(id);
+			
+		}else {
+			throw new Exception("해당 계정 "+id+"는 존재하지 않습니다.");
+		}
+		
+		return "삭제 되었습니다 id : " + id;
+	}
 	
 	// save 함수는 id를 전달하지 않으면 insert 해주고
 	// save 함수는 id를 전달하면 id에 대한 데이터가 있으면 update, id에 대한 데이터가 없으면 insert를 함 -> 대신 Transaction 사용이 유리
@@ -49,7 +63,7 @@ public class DummyControllerTest {
 
 		// userRepository.save(user); 
 		
-		return null;
+		return user;
 	}
 	
 	// http://localhost:8000/blog/dummy/users
