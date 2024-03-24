@@ -31,7 +31,7 @@
 
 </div>
 
-<script src="/blog/js/user.js"> </script>
+<script src="/js/user.js"> </script>
 <%@include file="../layout/footer.jsp"%>
 
 </body>
