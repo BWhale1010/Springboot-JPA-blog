@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +22,6 @@ import com.bw.blog.model.RoleType;
 import com.bw.blog.model.User;
 import com.bw.blog.repository.UserRepository;
 
-import jakarta.transaction.Transactional;
 
 // html 파일이 아니라 데이터를 리턴해주는 controller = RestController
 @RestController
@@ -76,11 +76,11 @@ public class DummyControllerTest {
 	// http://localhost:8000/blog/dummy/user
 	// 한 페이지 당 2건의 데이터를 리턴 받기
 	@GetMapping("/dummy/user")
-	public List<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable Pageable){
+	public Page<User> pageList(@PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable Pageable){
 		Page<User> pagingUser = userRepository.findAll(Pageable);
 		
 		List<User> users = pagingUser.getContent();
-		return users;
+		return pagingUser;
 	}
 
 	// {id} 주소로 파라미터를 전달

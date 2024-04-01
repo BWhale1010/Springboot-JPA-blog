@@ -3,19 +3,20 @@ package com.bw.blog.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,7 +41,7 @@ public class Board {
 	@Column(columnDefinition = "longtext") // lob 디폴트가 tinytext로 변경되어 추가 설정
 	private String content; // 섬머노트 라이브러리 사용 -> <html>태그가 섞여서 디자인 됨
 
-	@ColumnDefault("0")
+	//@ColumnDefault("0")
 	private int count; // 조회수
 	
 	@ManyToOne(fetch = FetchType.EAGER) // Many = Board, User = One, (fetch = FetchType.EAGER)(동기)는 user정보가 1개니까 조인하여 데이터를 바로 가져옴
