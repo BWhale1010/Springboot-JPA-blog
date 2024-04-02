@@ -12,7 +12,8 @@
 			<input type="email" value="${principal.user.username }" class="form-control" placeholder="Enter Username" name="text" id="username"  readonly>
 		</div>
 
-		<div class="form-group">
+<c:if test="${empty principal.user.oauth }">
+			<div class="form-group">
 			<label for="email">Email address</label> <input type="email"
 				class="form-control" id="email" placeholder="Enter email"
 				name="email" value="${principal.user.email }">
@@ -23,6 +24,23 @@
 				class="form-control" id="password" placeholder="Enter password"
 				name="password" >
 		</div>
+</c:if>
+
+<c:if test="${not empty principal.user.oauth }">
+
+			<div class="form-group">
+			<label for="email">Email address</label> <input type="email"
+				class="form-control" id="email" placeholder="Enter email"
+				name="email" value="${principal.user.email }" readonly="readonly">
+		</div> 
+
+		<div class="form-group">
+			<label for="pwd">Password</label> <input type="password"
+				class="form-control" id="password" placeholder="Enter password"
+				name="password"  readonly="readonly">
+		</div>
+</c:if>
+
 
 	</form>
 
