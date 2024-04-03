@@ -3,6 +3,7 @@ package com.bw.blog.model;
 import java.sql.Timestamp;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,9 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,10 +52,12 @@ public class Board {
 	@JoinColumn(name = "userId")
 	private User user; // DB는 오브젝트를 저장할 수 없다. (FK사용), 자바는 오브젝트를 저장할 수 있다.(ORM 사용)
 	 
-	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER) // Reply 테이블에 있는  board 컬럼과 join하여 데이터를 가져옴, fetch 타입이 LAZY이면 데이터 필요 시에 조회(비동기)
+	@OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE) // Reply 테이블에 있는  board 컬럼과 join하여 데이터를 가져옴, fetch 타입이 LAZY이면 데이터 필요 시에 조회(비동기)
 	// mappedBy는 Reply 테이블에 있는 필드 이름 작성, mappedBy 연관관계의 주인이 아님(FK가 아님), DB에 컬럼 생성  X
 	// @JoinColumn(name = "replyId") -> 이건(FK) 필요 없음, 키 생성 X, 테이블 생성 시 1정규화 위반, join만 해서 데이터만 가져올 것
-	private List<Reply> reply;
+	@JsonIgnoreProperties({"board"})
+	@OrderBy("id desc")
+	private List<Reply> replys;
 	
 	@CreationTimestamp // 데이터가 insert, update 시 시간을 자동 입력
 	private Timestamp createDate;
